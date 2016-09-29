@@ -3,20 +3,24 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
+Tasks = new Mongo.Collection('tasks');
+
+Template.list.helpers({
+  tasks: Tasks.find({}, { sort: { createdAt: -1 } })
 });
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
-});
+Template.form.events({
+  "submit .add-task": function(event) {
+    var name = event.target.name.value;
+    // console.log(name);
 
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
+    Tasks.insert({
+      name: name,
+      createdAt: new Date()
+    });
+
+    event.target.name.value = "";
+    
+    return false;
+  }
 });

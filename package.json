@@ -1,5 +1,5 @@
 {
-  "name": "foo",
+  "name": "meteor-todo",
   "private": true,
   "scripts": {
     "start": "meteor run"

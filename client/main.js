@@ -1,28 +1,11 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { Meteor } from '../shared/main.js';
+import { Tasks } from '../shared/main.js';
 
 import './main.html';
 
-Tasks = new Mongo.Collection('tasks');
-
 Meteor.subscribe('tasks');
-
-Meteor.methods({
-  addTask: function(name) {
-    if(!Meteor.userId()) {
-      throw new Meteor.Error('No Access!');
-    }
-
-    Tasks.insert({
-      name: name,
-      createdAt: new Date(),
-      userId: Meteor.userId()
-    });
-  },
-  deleteTask: function(task) {
-    Tasks.remove(task._id);
-  }
-});
 
 Template.list.helpers({
   tasks: Tasks.find({}, { sort: { createdAt: -1 } })
@@ -40,11 +23,8 @@ Template.list.events({
 Template.form.events({
   "submit .add-task": function(event) {
     var name = event.target.name.value;
-
     Meteor.call('addTask', name);
-
     event.target.name.value = "";
-
     return false;
   }
 });

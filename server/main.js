@@ -4,6 +4,13 @@ Meteor.startup(() => {
   // code to run on server at startup
 });
 
+
+// Tasks should get hoisted here
+Meteor.publish('tasks', function(){
+  return Tasks.find();
+});
+
+
 // for this demo, below code is duplicated in client.
 // normally I would pull this out to a common include.
 

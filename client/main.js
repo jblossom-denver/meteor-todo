@@ -5,6 +5,8 @@ import './main.html';
 
 Tasks = new Mongo.Collection('tasks');
 
+Meteor.subscribe('tasks');
+
 Meteor.methods({
   addTask: function(name) {
     if(!Meteor.userId()) {

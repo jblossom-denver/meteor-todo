@@ -3,23 +3,28 @@
 </head>
 
 <body>
+
+  {{>loginButtons}}
+
   <h1>To Do List</h1>
 
   {{> list}}
 
-  <h3>Add Task</h3>
+  {{#if currentUser}}
   {{> form}}
+  {{/if}}
 </body>
 
 <template name="list">
   <ul>
   {{#each tasks}}
-    <li>{{name}}</li>
+    <li>{{name}} {{#if currentUser}}<a href="#" class="delete-task">X</a>{{/if}}</li>
   {{/each}}
   </ul>
 </template>
 
 <template name="form">
+  <h3>Add Task</h3>
   <form class="add-task">
     <input type="text" name="name" placeholder="Task Name" />
     <input type="submit" value="Add" />

@@ -9,18 +9,27 @@ Template.list.helpers({
   tasks: Tasks.find({}, { sort: { createdAt: -1 } })
 });
 
+Template.list.events({
+  "click .delete-task": function(event) {
+    if(confirm("Are you sure you want to delete '"+this.name+"' ?")) {
+      Tasks.remove(this._id);
+    }
+    return false;
+  }
+});
+
 Template.form.events({
   "submit .add-task": function(event) {
     var name = event.target.name.value;
-    // console.log(name);
 
     Tasks.insert({
       name: name,
-      createdAt: new Date()
+      createdAt: new Date(),
+      userId: Meteor.userId()
     });
 
     event.target.name.value = "";
-    
+
     return false;
   }
 });
